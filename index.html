@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TURING 3000 • Balanceador de a's y b's</title>
+    
+    <!-- FUENTES SUAVES -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- MENÚ LATERAL -->
+        <aside class="sidebar">
+            <h2>Documentación</h2>
+            
+            <div class="section">
+                <h3>Séptuplo</h3>
+                <p><strong>M = (Q, Σ, Γ, δ, q₀, _, {q₅})</strong></p>
+                <ul>
+                    <li>Q = {q₀, q₁, q₂, q₃, q₄, q₅}</li>
+                    <li>Σ = {a, b}</li>
+                    <li>Γ = {a, b, A, B, _}</li>
+                    <li>q₀ inicial • _ blanco • q₅ final</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>Lenguaje</h3>
+                <p>Todas las cadenas que quedan balanceadas<br><strong>Acepta (a|b)*</strong></p>
+            </div>
+
+            <div class="section">
+                <h3>Estados</h3>
+                <details><summary>q₀ → busca letra</summary><p>Marca A/B y avanza</p></details>
+                <details><summary>q₁ → busca b para A</summary><p>Si no hay → escribe B</p></details>
+                <details><summary>q₂ → busca a para B</summary><p>Si no hay → escribe A</p></details>
+                <details><summary>q₃ → vuelve al inicio</summary><p>Izquierda hasta _</p></details>
+                <details><summary>q₄ → limpia marcas</summary><p>A→a, B→b</p></details>
+                <details><summary>q₅ → acepta</summary><p>¡Perfecto!</p></details>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO -->
+        <main class="main">
+            <header class="hero">
+                <div class="title-box">
+                    <h1 class="main-title">
+                        <span class="turing">TURING</span>
+                        <span class="number">3000</span>
+                    </h1>
+                    <p class="subtitle-soft">
+                        Máquina de Turing • Balanceadora de <span class="ab">a</span>'s y <span class="ab">b</span>'s
+                    </p>
+                    <div class="soft-line"></div>
+                </div>
+                <p class="author">Proyecto Final • 2025 • Por Adami Ramiro Oliva Martinez 0902-23-1982 </p>
+            </header>
+
+            <div class="card">
+                <h2>Grafo del Autómata</h2>
+                <img src="automata.png" alt="MT" class="graph">
+            </div>
+
+            <div class="card simulador">
+                <h2>Simulador</h2>
+                <div class="input-group">
+                    <input type="text" id="cadena" placeholder="Ej: aaabb" class="input">
+                    <button onclick="simular()" class="btn">Ejecutar</button>
+                </div>
+
+                <div id="resultado" class="resultado-final"></div>
+
+                <div class="cinta-box">
+                    <div id="cinta" class="cinta"></div>
+                </div>
+
+                <details class="menu-pasos">
+                    <summary>Descripciones Instantáneas</summary>
+                    <ol id="pasos-lista"></ol>
+                </details>
+
+                <details class="menu-tabla">
+                    <summary>Tabla de Transiciones δ</summary>
+                    <div class="tabla-container">
+                        <table class="tabla-transiciones">
+                            <thead>
+                                <tr><th>Estado</th><th>Lee</th><th>Escribe</th><th>Mueve</th><th>→</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>q₀</td><td>_</td><td>_</td><td>L</td><td>q₄</td></tr>
+                                <tr><td>q₀</td><td>a</td><td>A</td><td>R</td><td>q₁</td></tr>
+                                <tr><td>q₀</td><td>b</td><td>B</td><td>R</td><td>q₂</td></tr>
+                                <tr><td>q₀</td><td>A</td><td>A</td><td>R</td><td>q₀</td></tr>
+                                <tr><td>q₀</td><td>B</td><td>B</td><td>R</td><td>q₀</td></tr>
+                                <tr><td>q₁</td><td>_</td><td>B</td><td>L</td><td>q₃</td></tr>
+                                <tr><td>q₁</td><td>b</td><td>B</td><td>L</td><td>q₃</td></tr>
+                                <tr><td>q₁</td><td>a</td><td>a</td><td>R</td><td>q₁</td></tr>
+                                <tr><td>q₁</td><td>A</td><td>A</td><td>R</td><td>q₁</td></tr>
+                                <tr><td>q₁</td><td>B</td><td>B</td><td>R</td><td>q₁</td></tr>
+                                <tr><td>q₂</td><td>a</td><td>A</td><td>L</td><td>q₃</td></tr>
+                                <tr><td>q₂</td><td>_</td><td>A</td><td>L</td><td>q₃</td></tr>
+                                <tr><td>q₂</td><td>b</td><td>b</td><td>R</td><td>q₂</td></tr>
+                                <tr><td>q₂</td><td>A</td><td>A</td><td>R</td><td>q₂</td></tr>
+                                <tr><td>q₂</td><td>B</td><td>B</td><td>R</td><td>q₂</td></tr>
+                                <tr><td>q₃</td><td>_</td><td>_</td><td>R</td><td>q₀</td></tr>
+                                <tr><td>q₃</td><td>a</td><td>a</td><td>L</td><td>q₃</td></tr>
+                                <tr><td>q₃</td><td>b</td><td>b</td><td>L</td><td>q₃</td></tr>
+                                <tr><td>q₃</td><td>A</td><td>A</td><td>L</td><td>q₃</td></tr>
+                                <tr><td>q₃</td><td>B</td><td>B</td><td>L</td><td>q₃</td></tr>
+                                <tr><td>q₄</td><td>A</td><td>a</td><td>L</td><td>q₄</td></tr>
+                                <tr><td>q₄</td><td>B</td><td>b</td><td>L</td><td>q₄</td></tr>
+                                <tr><td>q₄</td><td>_</td><td>_</td><td>S</td><td>q₅</td></tr>
+                                <tr><td>q₄</td><td>a</td><td>a</td><td>L</td><td>q₄</td></tr>
+                                <tr><td>q₄</td><td>b</td><td>b</td><td>L</td><td>q₄</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+            </div>
+
+            <footer>
+                <p>Universidad Mariano Galvez • UMG • <span id="link"></span></p>
+            </footer>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>document.getElementById('link').textContent = location.href;</script>
+</body>
+</html>
